@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo 3D Creations - 3D Artist</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <a href="#home">Echo 3D Creations</a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#portfolio">Portfolio</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#news">News</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Echo 3D Creations</h1>
+                <p>3D Artist &amp; Indie Game Developer</p>
+                <a href="#portfolio" class="cta-button">View Portfolio</a>
+            </div>
+            <div id="hero-3d-model"></div>
+            <div class="hero-model-controls">
+                <button class="prev-model">&lt;</button>
+                <button class="next-model">&gt;</button>
+            </div>
+        </section>
+        <section id="portfolio" class="portfolio">
+            <div class="container">
+                <h2>Portfolio</h2>
+                <div class="filter-buttons">
+                    <button data-filter="all" class="active">All</button>
+                    <button data-filter="personal">Personal</button>
+                    <button data-filter="professional">Professional</button>
+                    <button data-filter="3d">3D Art</button>
+                    <button data-filter="2d">2D Art</button>
+                    <button data-filter="other">Other</button>
+                </div>
+                <div class="gallery-container">
+                    <div class="gallery-wrapper">
+                        <div class="gallery-item" data-tags="professional,3d">
+                            <img src="portfolio/thumbnails/img1.jpg" alt="Artwork 1" data-large="portfolio/large/img1.jpg">
+                            <div class="gallery-item-details">
+                                <h3>Artwork Title 1</h3>
+                                <p>Artwork description goes here.</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item" data-tags="professional,2d">
+                            <img src="portfolio/thumbnails/img2.jpg" alt="Artwork 2" data-large="portfolio/large/img2.jpg">
+                            <div class="gallery-item-details">
+                                <h3>Artwork Title 2</h3>
+                                <p>Artwork description goes here.</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item" data-tags="professional,3d,other">
+                            <img src="portfolio/thumbnails/img3.jpg" alt="Artwork 3" data-large="portfolio/large/img3.jpg">
+                            <div class="gallery-item-details">
+                                <h3>Artwork Title 3</h3>
+                                <p>Artwork description goes here.</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item" data-tags="personal,2d">
+                            <img src="portfolio/thumbnails/img4.jpg" alt="Artwork 4" data-large="portfolio/large/img4.jpg">
+                            <div class="gallery-item-details">
+                                <h3>Artwork Title 4</h3>
+                                <p>Artwork description goes here.</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item" data-tags="personal,3d">
+                            <img src="portfolio/thumbnails/img5.jpg" alt="Artwork 5" data-large="portfolio/large/img5.jpg">
+                            <div class="gallery-item-details">
+                                <h3>Artwork Title 5</h3>
+                                <p>Artwork description goes here.</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item" data-tags="personal,other">
+                            <div class="gallery-item-3d" data-model="portfolio/3d-models/model1.glb"></div>
+                            <div class="gallery-item-details">
+                                <h3>3D Model Title</h3>
+                                <p>3D model description goes here.</p>
+                            </div>
+                        </div>
+                        <!-- Add more gallery items as needed -->
+                    </div>
+                </div>
+                <div class="gallery-controls">
+                    <button class="gallery-prev">&lt;</button>
+                    <button class="gallery-next">&gt;</button>
+                </div>
+            </div>
+            <div id="portfolio-popup" class="popup">
+                <div class="popup-content">
+                    <img id="portfolio-popup-image" src="" alt="Portfolio Image">
+                    <button class="close-popup">&times;</button>
+                </div>
+            </div>
+        </section>
+        <section id="services" class="services">
+            <div class="container">
+                <h2>3D Services</h2>
+                <div class="service-items">
+                    <div class="service-item" data-bg-id="background-models">
+                        <h3>Background Models</h3>
+                        <p>Pricing range:</p>
+                        <ul>
+                            <li>Simple background models: $40 - $200</li>
+                            <li>Medium complexity background models: $200 - $1000</li>
+                            <li>Highly complex background models: $1000+</li>
+                        </ul>
+                        <p>Considerations:</p>
+                        <ol>
+                            <li>Model complexity</li>
+                            <li>Software and tools used</li>
+                            <li>Artist's skill and experience</li>
+                        </ol>
+                    </div>
+                    <div class="service-item" data-bg-id="character-models">
+                        <h3>Character Models</h3>
+                        <p>Pricing range:</p>
+                        <ul>
+                            <li>Simple stylized characters: $500 - $5000</li>
+                            <li>Photorealistic characters: $5000+</li>
+                        </ul>
+                        <p>Considerations:</p>
+                        <ol>
+                            <li>Model complexity</li>
+                            <li>Project timeline and deadlines</li>
+                            <li>Artist's skill and experience</li>
+                        </ol>
+                    </div>
+                    <div class="service-item" data-bg-id="prop-models">
+                        <h3>Prop Models</h3>
+                        <p>Pricing range:</p>
+                        <ul>
+                            <li>Simple prop models: $40 - $200</li>
+                            <li>Medium complexity prop models: $200 - $1000</li>
+                            <li>Highly complex prop models: $1000+</li>
+                        </ul>
+                        <p>Considerations:</p>
+                        <ol>
+                            <li>Model complexity</li>
+                            <li>Project timeline and deadlines</li>
+                            <li>Artist's skill and experience</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="news" class="news">
+            <div class="container">
+                <h2>News</h2>
+                <div class="news-items">
+                    <div class="news-item">
+                        <h3>New Portfolio Page Launched!</h3>
+                        <p class="news-date">May 20, 2024</p>
+                        <p>I am excited to announce the launch of my new portfolio page! </p>
+                        <a href="#" class="read-more" data-article="article1">Read More</a>
+                        <div class="news-article" id="article1">
+                            <h3>New Portfolio Page Launched!</h3>
+                            <p>This site showcases my latest 3D creations, including intricate background models, detailed character models, and various prop models. Check out my work and feel free to get in touch for collaboration opportunities. Explore the site to see what I can bring to your next project!</p>
+                        </div>
+                    </div><div class="news-item">
+                        <h3>New Portfolio Page Launched!</h3>
+                        <p class="news-date">May 20, 2024</p>
+                        <p>I am excited to announce the launch of my new portfolio page! </p>
+                        <a href="#" class="read-more" data-article="article1">Read More</a>
+                        <div class="news-article" id="article1">
+                            <h3>New Portfolio Page Launched!</h3>
+                            <p>This site showcases my latest 3D creations, including intricate background models, detailed character models, and various prop models. Check out my work and feel free to get in touch for collaboration opportunities. Explore the site to see what I can bring to your next project!</p>
+                        </div>
+                    </div>
+                    <!-- Add more news items as needed -->
+                </div>
+            </div>
+        </section>
+        <section id="about" class="about">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2>About E3C</h2>
+                        <p>Welcome to Echo 3D Creations! Based in Japan, Echo 3D Creations is a premier 3D game modeling and indie game development studio. With extensive experience in the industry, we specialize in creating captivating 3D designs that bring imaginative worlds to life.</p>
+                        <p>At Echo 3D Creations, our expertise lies in crafting detailed background models, character models, and props. Our work is characterized by a strong attention to detail and a deep appreciation for Japanese aesthetics. We have a proven track record of producing high-quality assets for a variety of popular titles.</p>
+                    </div>
+                    <div class="about-image">
+                        <img src="profile.jpg" alt="Echo 3D Creations">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2>Contact</h2>
+                <form action="send-email.php" method="post">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message:</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Send</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="#"><img src="twitter-icon.png" alt="Twitter"></a>
+                <a href="#"><img src="linkedin-icon.png" alt="LinkedIn"></a>
+            </div>
+            <div class="footer-text">
+                <p>&copy; 2024 Echo 3D Creations. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>
