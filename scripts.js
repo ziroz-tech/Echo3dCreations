@@ -1,35 +1,73 @@
-// scripts.js
-
 document.addEventListener('DOMContentLoaded', () => {
-    // Smooth scroll for navigation links
-    const navLinks = document.querySelectorAll('nav ul li a');
-    navLinks.forEach(link => {
-        link.addEventListener('click', smoothScroll);
-    });
-
-    function smoothScroll(event) {
-        event.preventDefault();
-        const targetId = event.currentTarget.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
-        targetSection.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
+    // Load content.html
+    fetch('content.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('content').innerHTML = data;
+            initializeContent();
         });
-    }
 
-    // Filter gallery items
-    const filterButtons = document.querySelectorAll('.filter-buttons button');
-    const galleryItems = document.querySelectorAll('.gallery-item');
+    function initializeContent() {
+        // Smooth scroll for navigation links
+        const navLinks = document.querySelectorAll('nav ul li a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', smoothScroll);
+        });
 
-    filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            const filter = button.getAttribute('data-filter');
+        function smoothScroll(event) {
+            event.preventDefault();
+            const targetId = event.currentTarget.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            targetSection.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
 
-            galleryItems.forEach(item => {
-                const tags = item.getAttribute('data-tags').split(',');
-                if (filter === 'all' || tags.includes(filter)) {
+        // Filter gallery items
+        const filterButtons = document.querySelectorAll('.filter-buttons button');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                const filter = button.getAttribute('data-filter');
+
+                galleryItems.forEach(item => {
+                    const tags = item.getAttribute('data-tags').split(',');
+                    if (filter === 'all' || tags.includes(filter)) {
+                        item.style.display = 'block';
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateY(0)';
+                            item.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                        }, 100);
+                    } else {
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateY(20px)';
+                        item.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                        setTimeout(() => {
+                            item.style.display = 'none';
+                        }, 400);
+                    }
+                });
+            });
+        });
+
+        // Gallery pagination
+        const galleryPrevButton = document.querySelector('.gallery-prev');
+        const galleryNextButton = document.querySelector('.gallery-next');
+        let currentPage = 0;
+        const itemsPerPage = 8;
+        const totalPages = Math.ceil(galleryItems.length / itemsPerPage);
+
+        function showPage(page) {
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+
+            galleryItems.forEach((item, index) => {
+                if (index >= startIndex && index < endIndex) {
                     item.style.display = 'block';
                     setTimeout(() => {
                         item.style.opacity = '1';
@@ -45,86 +83,113 @@ document.addEventListener('DOMContentLoaded', () => {
                     }, 400);
                 }
             });
-        });
-    });
+        }
 
-    // Gallery pagination
-    const galleryPrevButton = document.querySelector('.gallery-prev');
-    const galleryNextButton = document.querySelector('.gallery-next');
-    let currentPage = 0;
-    const itemsPerPage = 8;
-    const totalPages = Math.ceil(galleryItems.length / itemsPerPage);
+        function updateGallery() {
+            showPage(currentPage + 1);
+        }
 
-    function showPage(page) {
-        const startIndex = (page - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-
-        galleryItems.forEach((item, index) => {
-            if (index >= startIndex && index < endIndex) {
-                item.style.display = 'block';
-                setTimeout(() => {
-                    item.style.opacity = '1';
-                    item.style.transform = 'translateY(0)';
-                    item.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-                }, 100);
+        galleryPrevButton.addEventListener('click', () => {
+            if (currentPage > 0) {
+                currentPage--;
+                updateGallery();
             } else {
-                item.style.opacity = '0';
-                item.style.transform = 'translateY(20px)';
-                item.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-                setTimeout(() => {
-                    item.style.display = 'none';
-                }, 400);
+                currentPage = totalPages - 1;
+                updateGallery();
             }
         });
-    }
 
-    function updateGallery() {
-        showPage(currentPage + 1);
-    }
-
-    galleryPrevButton.addEventListener('click', () => {
-        if (currentPage > 0) {
-            currentPage--;
-            updateGallery();
-        } else {
-            currentPage = totalPages - 1;
-            updateGallery();
-        }
-    });
-
-    galleryNextButton.addEventListener('click', () => {
-        if (currentPage < totalPages - 1) {
-            currentPage++;
-            updateGallery();
-        } else {
-            currentPage = 0;
-            updateGallery();
-        }
-    });
-
-    // Open portfolio popup
-    const galleryImages = document.querySelectorAll('.gallery-item img');
-    const portfolioPopup = document.getElementById('portfolio-popup');
-    const portfolioPopupImage = document.getElementById('portfolio-popup-image');
-    const closePopupButton = document.querySelector('.close-popup');
-
-    galleryImages.forEach(image => {
-        image.addEventListener('click', () => {
-            const largeImageSrc = image.getAttribute('data-large');
-            portfolioPopupImage.src = largeImageSrc;
-            portfolioPopup.classList.add('show');
+        galleryNextButton.addEventListener('click', () => {
+            if (currentPage < totalPages - 1) {
+                currentPage++;
+                updateGallery();
+            } else {
+                currentPage = 0;
+                updateGallery();
+            }
         });
-    });
 
-    closePopupButton.addEventListener('click', () => {
-        portfolioPopup.classList.remove('show');
-    });
+        // Open portfolio popup
+        const galleryImages = document.querySelectorAll('.gallery-item img');
+        const portfolioPopup = document.getElementById('portfolio-popup');
+        const portfolioPopupImage = document.getElementById('portfolio-popup-image');
 
-    // Initialize 3D models
-    init3DModels();
+        galleryImages.forEach(image => {
+            image.addEventListener('click', (event) => {
+                event.stopPropagation();
+                const largeImageSrc = image.getAttribute('data-large');
+                portfolioPopupImage.src = largeImageSrc;
+                portfolioPopup.classList.add('show');
+            });
+        });
 
-    // ヒーローセクションで3Dモデルを初期化
-    initHero3DModel();
+        portfolioPopup.addEventListener('click', (event) => {
+            if (event.target === portfolioPopup) {
+                portfolioPopup.classList.remove('show');
+            }
+        });
+
+        // Initialize 3D models
+        init3DModels();
+
+        // Initialize hero 3D model
+        initHero3DModel();
+
+        // Services hover effect
+        const servicesSection = document.querySelector('.services');
+        const serviceItems = document.querySelectorAll('.service-item');
+        let backgroundTimer = null;
+
+        serviceItems.forEach(item => {
+            const bgId = item.getAttribute('data-bg-id');
+            let backgroundImage;
+
+            switch (bgId) {
+                case 'background-models':
+                    backgroundImage = 'url(\'background-models.jpg\')';
+                    break;
+                case 'character-models':
+                    backgroundImage = 'url(\'character-models.jpg\')';
+                    break;
+                case 'prop-models':
+                    backgroundImage = 'url(\'prop-models.jpg\')';
+                    break;
+                default:
+                    backgroundImage = 'none';
+            }
+
+            item.addEventListener('mouseenter', () => {
+                servicesSection.style.backgroundImage = backgroundImage;
+                clearTimeout(backgroundTimer);
+            });
+
+            item.addEventListener('mouseleave', () => {
+                backgroundTimer = setTimeout(() => {
+                    servicesSection.style.backgroundImage = 'none';
+                }, 2000);
+            });
+        });
+
+        // Open news popup
+        const readMoreLinks = document.querySelectorAll('.read-more');
+        const newsPopup = document.getElementById('news-popup');
+        const newsPopupContent = document.getElementById('news-popup-content');
+        const closeNewsPopupButton = newsPopup.querySelector('.close-popup');
+
+        readMoreLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+                const articleId = link.getAttribute('data-article');
+                const article = document.getElementById(articleId);
+                newsPopupContent.innerHTML = article.innerHTML;
+                newsPopup.classList.add('show');
+            });
+        });
+
+        closeNewsPopupButton.addEventListener('click', () => {
+            newsPopup.classList.remove('show');
+        });
+    }
 
     // Add scroll event listener
     window.addEventListener('scroll', () => {
@@ -146,98 +211,8 @@ document.addEventListener('DOMContentLoaded', () => {
         menuToggle.classList.toggle('active');
         nav.classList.toggle('active');
     });
-
-    // Services hover effect
-    const servicesSection = document.querySelector('.services');
-    const serviceItems = document.querySelectorAll('.service-item');
-
-    serviceItems.forEach(item => {
-        const bgId = item.getAttribute('data-bg-id');
-        let backgroundImage;
-
-        switch (bgId) {
-            case 'background-models':
-                backgroundImage = 'url(\'background-models.jpg\')';
-                break;
-            case 'character-models':
-                backgroundImage = 'url(\'character-models.jpg\')';
-                break;
-            case 'prop-models':
-                backgroundImage = 'url(\'prop-models.jpg\')';
-                break;
-            default:
-                backgroundImage = 'none';
-        }
-
-        item.addEventListener('mouseenter', () => {
-            servicesSection.style.backgroundImage = backgroundImage;
-        });
-
-        item.addEventListener('mouseleave', () => {
-            servicesSection.style.backgroundImage = 'none';
-        });
-    });
 });
-    // Services hover effect
-    const servicesSection = document.querySelector('.services');
-    const serviceItems = document.querySelectorAll('.service-item');
 
-    serviceItems.forEach(item => {
-        const bgId = item.getAttribute('data-bg-id');
-        let backgroundImage;
-
-        switch (bgId) {
-            case 'background-models':
-                backgroundImage = 'url(\'background-models.jpg\')';
-                break;
-            case 'character-models':
-                backgroundImage = 'url(\'character-models.jpg\')';
-                break;
-            case 'prop-models':
-                backgroundImage = 'url(\'prop-models.jpg\')';
-                break;
-            default:
-                backgroundImage = 'none';
-        }
-
-        item.addEventListener('mouseenter', () => {
-            servicesSection.style.backgroundImage = backgroundImage;
-        });
-
-        item.addEventListener('mouseleave', () => {
-            servicesSection.style.backgroundImage = 'none';
-        });
-    });
-});
-    // News article popup
-    const readMoreLinks = document.querySelectorAll('.read-more');
-    const newsPopup = document.createElement('div');
-    newsPopup.classList.add('news-popup');
-    document.body.appendChild(newsPopup);
-
-    readMoreLinks.forEach(link => {
-        link.addEventListener('click', (event) => {
-            event.preventDefault();
-            const articleId = link.getAttribute('data-article');
-            const article = document.getElementById(articleId);
-            const newsPopupContent = document.createElement('div');
-            newsPopupContent.classList.add('news-popup-content');
-            newsPopupContent.innerHTML = article.innerHTML;
-
-            const closeNewsPopupButton = document.createElement('button');
-            closeNewsPopupButton.classList.add('close-news-popup');
-            closeNewsPopupButton.innerHTML = '&times;';
-            closeNewsPopupButton.addEventListener('click', () => {
-                newsPopup.classList.remove('show');
-                newsPopup.innerHTML = '';
-            });
-
-            newsPopupContent.appendChild(closeNewsPopupButton);
-            newsPopup.appendChild(newsPopupContent);
-            newsPopup.classList.add('show');
-        });
-    });
-});
 function init3DModels() {
     const modelContainers = document.querySelectorAll('.gallery-item-3d');
 
@@ -248,7 +223,6 @@ function init3DModels() {
         renderer.setSize(container.clientWidth, container.clientHeight);
         container.appendChild(renderer.domElement);
 
-        // ライトを追加
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
         scene.add(ambientLight);
 
@@ -279,10 +253,9 @@ function initHero3DModel() {
     const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setClearColor(0xf0f0f0, 1); // 背景色を変更
+    renderer.setClearColor(0xf0f0f0, 1);
     container.appendChild(renderer.domElement);
 
-    // ライトを追加
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
 
@@ -313,22 +286,18 @@ function initHero3DModel() {
 
     loadHeroModel(heroModels[currentModelIndex]);
 
-    // モデルを適切な位置に設定
-    camera.position.set(0, 0, 5);
+    camera.position.set(0, 0, 4);
 
-    // マウス操作でモデルを回転させる
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.screenSpacePanning = false;
     controls.minDistance = 3;
-    controls.maxDistance = 10;
+    controls.maxDistance = 30;
 
-    // テキストの表示/非表示を制御する変数
     let isTextVisible = true;
     let textTimer = null;
 
-    // マウスムーブイベントリスナーを追加
     container.addEventListener('mousemove', () => {
         if (isTextVisible) {
             isTextVisible = false;
@@ -338,10 +307,9 @@ function initHero3DModel() {
         textTimer = setTimeout(() => {
             isTextVisible = true;
             document.querySelector('.hero-content').classList.remove('hide');
-        }, 3000); // 3秒後にテキストを再表示
+        }, 3000);
     });
 
-    // 矢印ボタンのクリックイベントを追加
     const prevButton = document.querySelector('.prev-model');
     const nextButton = document.querySelector('.next-model');
 
@@ -355,9 +323,33 @@ function initHero3DModel() {
         loadHeroModel(heroModels[currentModelIndex]);
     });
 
+    let initialAnimationPlayed = false;
+    const initialModelPosition = new THREE.Vector3(0, 0, -6);
+    const finalModelPosition = new THREE.Vector3(0, 0, 0);
+
     function animate() {
         requestAnimationFrame(animate);
         controls.update();
+
+        if (!initialAnimationPlayed) {
+            const rotationSpeed = 0.035;
+            const scaleSpeed = 0.005;
+            const positionSpeed = 0.02;
+            const targetRotationY = Math.PI * 2;
+            const targetScale = 1;
+
+            heroModel.rotation.y += rotationSpeed;
+            heroModel.scale.x += scaleSpeed;
+            heroModel.scale.y += scaleSpeed;
+            heroModel.scale.z += scaleSpeed;
+            heroModel.position.lerp(finalModelPosition, positionSpeed);
+
+            if (heroModel.rotation.y >= targetRotationY && heroModel.scale.x >= targetScale) {
+                initialAnimationPlayed = true;
+                heroModel.rotation.y = 0;
+            }
+        }
+
         renderer.render(scene, camera);
     }
 }
